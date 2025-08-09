@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouvidoria - Sucesso RH</title>
+
+    <!-- Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Custom Styles & Theme -->
+    <style>
+        :root {
+            --azul-escuro: #003380;
+            --azul-medio: #0055d4;
+            --cinza-texto: #4B5563;
+            --cinza-fundo: #f8fafc;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--cinza-texto);
+            background-color: var(--cinza-fundo);
+        }
+        h1, h2, h3, .font-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--azul-medio), var(--azul-escuro));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        /* Gradient Button */
+        .btn-gradient {
+            background: linear-gradient(90deg, var(--azul-medio), var(--azul-escuro));
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px 0 rgba(0, 85, 212, 0.35);
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px 0 rgba(0, 85, 212, 0.45);
+        }
+
+        /* Modal Popup Animation */
+        .modal-popup {
+            animation: popup 0.3s ease-out forwards;
+        }
+        @keyframes popup {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+            border: 3px solid #f1f5f9;
+        }
+        
+        /* FAQ Accordion Arrow */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details > summary::after {
+            content: '+';
+            float: right;
+            font-size: 1.5em;
+            font-weight: 500;
+            line-height: 1;
+            transition: transform 0.2s ease-in-out;
+        }
+        details[open] > summary::after {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- SVG Gradient Definition -->
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:var(--azul-medio);" />
+          <stop offset="100%" style="stop-color:var(--azul-escuro);" />
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- Global Error/Success Banner -->
+    <div id="global-banner" class="hidden sticky top-0 left-0 right-0 text-white text-center p-3 z-50 transition-all">
+        <span id="global-banner-message"></span>
+        <button onclick="this.parentElement.classList.add('hidden')" class="absolute top-1/2 right-4 -translate-y-1/2 font-bold">
+            <i data-feather="x" class="w-5 h-5"></i>
+        </button>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ====                  PÁGINA DA OUVIDORIA (PÚBLICA)             ==== -->
+    <!-- =================================================================== -->
+    <div id="ouvidoria-view">
+        <!-- Header -->
+        <header class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-40">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <img src="https://i.postimg.cc/wv5wQfzB/logo-sucesso-rh.png" alt="Logotipo Sucesso RH" class="h-8 w-auto">
+                <button id="open-admin-login-btn" class="text-gray-500 hover:text-azul-medio transition-colors" aria-label="Acesso do Ouvidor">
+                    <i data-feather="settings" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Hero Section -->
+            <section class="text-center py-20 md:py-32 px-6 bg-white">
+                <h1 class="text-5xl md:text-7xl font-extrabold gradient-text">Canal de Ouvidoria</h1>
+                <p class="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">Um espaço seguro e confidencial para suas manifestações. Sua voz é fundamental para a construção de um ambiente de trabalho mais ético e transparente.</p>
+                <button id="open-report-modal-btn-hero" class="open-report-modal-btn mt-12 btn-gradient text-white font-semibold px-10 py-4 rounded-full text-lg">
+                    Fazer um Relato Agora
+                </button>
+            </section>
+
+            <!-- Principles Section -->
+            <section class="py-20 px-6">
+                <div class="container mx-auto grid md:grid-cols-3 gap-10 text-center">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 transform hover:-translate-y-2 transition-transform duration-300">
+                        <svg class="w-14 h-14 mx-auto mb-5" fill="url(#icon-gradient)" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z"/></svg>
+                        <h3 class="text-2xl font-bold mb-2 text-azul-escuro">Confidencialidade</h3>
+                        <p class="text-gray-600">Garantimos o sigilo absoluto das suas informações. Você também pode optar por fazer um relato totalmente anônimo.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 transform hover:-translate-y-2 transition-transform duration-300">
+                        <svg class="w-14 h-14 mx-auto mb-5" fill="url(#icon-gradient)" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <h3 class="text-2xl font-bold mb-2 text-azul-escuro">Imparcialidade</h3>
+                        <p class="text-gray-600">Todos os relatos são analisados de forma justa e imparcial por uma equipe dedicada, sem conflitos de interesse.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 transform hover:-translate-y-2 transition-transform duration-300">
+                        <svg class="w-14 h-14 mx-auto mb-5" fill="url(#icon-gradient)" viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+                        <h3 class="text-2xl font-bold mb-2 text-azul-escuro">Acolhimento</h3>
+                        <p class="text-gray-600">Este é um canal de escuta ativa. Estamos aqui para ouvir e tratar cada manifestação com o devido respeito e seriedade.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- What to Report Section -->
+            <section class="py-20 px-6 bg-white">
+                <div class="container mx-auto text-center">
+                    <h2 class="text-4xl md:text-5xl font-extrabold gradient-text">O que pode ser relatado?</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Este canal é destinado a qualquer conduta que viole nosso Código de Ética, políticas internas ou a legislação vigente.</p>
+                    <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Assédio</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Discriminação</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Fraude</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Corrupção</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Conflito de Interesses</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Segurança</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Violação de Políticas</div>
+                        <div class="bg-blue-50 text-blue-800 font-semibold p-4 rounded-lg">Outras Irregularidades</div>
+                    </div>
+                     <button class="open-report-modal-btn mt-12 btn-gradient text-white font-semibold px-10 py-4 rounded-full text-lg">
+                        Relatar uma Conduta
+                    </button>
+                </div>
+            </section>
+
+            <!-- How it works Section -->
+            <section class="py-20 px-6">
+                <div class="container mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-extrabold gradient-text text-center mb-16">Como Funciona em 3 Passos</h2>
+                    <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+                        <!-- Step 1 -->
+                        <div class="text-center p-6">
+                            <div class="relative inline-block">
+                                <div class="bg-blue-100 w-24 h-24 rounded-full"></div>
+                                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold gradient-text">1</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-azul-escuro mt-6 mb-2">Envio do Relato</h3>
+                            <p>Preencha o formulário de forma segura, anônima ou identificada. Forneça o máximo de detalhes possível para uma apuração eficaz.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="text-center p-6">
+                            <div class="relative inline-block">
+                                <div class="bg-blue-100 w-24 h-24 rounded-full"></div>
+                                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold gradient-text">2</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-azul-escuro mt-6 mb-2">Análise e Apuração</h3>
+                            <p>A Ouvidoria recebe, analisa as informações e inicia uma apuração interna cuidadosa, garantindo total sigilo.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="text-center p-6">
+                            <div class="relative inline-block">
+                                <div class="bg-blue-100 w-24 h-24 rounded-full"></div>
+                                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold gradient-text">3</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-azul-escuro mt-6 mb-2">Resposta e Ação</h3>
+                            <p>As medidas cabíveis são tomadas. Se você se identificou, receberá um retorno sobre as providências adotadas no seu caso.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- FAQ Section -->
+            <section class="py-20 px-6 bg-white">
+                <div class="container mx-auto max-w-3xl">
+                    <h2 class="text-4xl md:text-5xl font-extrabold gradient-text text-center mb-16">Perguntas Frequentes</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 p-6 rounded-lg">
+                            <summary class="font-semibold text-lg cursor-pointer text-azul-escuro">Preciso me identificar?</summary>
+                            <p class="mt-4 text-gray-600">Não. O relato pode ser 100% anônimo. No entanto, fornecer um meio de contato (mesmo que um e-mail anônimo) pode ajudar a Ouvidoria a solicitar mais informações, se necessário.</p>
+                        </details>
+                        <details class="bg-gray-50 p-6 rounded-lg">
+                            <summary class="font-semibold text-lg cursor-pointer text-azul-escuro">Sofrerei alguma retaliação por fazer uma denúncia?</summary>
+                            <p class="mt-4 text-gray-600">A Sucesso RH tem uma política de não retaliação. Qualquer ato contra um denunciante de boa-fé será tratado com a máxima seriedade e sujeito a medidas disciplinares.</p>
+                        </details>
+                        <details class="bg-gray-50 p-6 rounded-lg">
+                            <summary class="font-semibold text-lg cursor-pointer text-azul-escuro">O que acontece após o envio do meu relato?</summary>
+                            <p class="mt-4 text-gray-600">Seu relato recebe um número de protocolo, é analisado pela equipe da Ouvidoria, que inicia a apuração. Ao final, as ações corretivas são aplicadas e, se identificado, você recebe um retorno.</p>
+                        </details>
+                    </div>
+                    <div class="text-center mt-12">
+                        <p class="text-lg">Ainda tem dúvidas? Fale conosco.</p>
+                        <button class="open-report-modal-btn mt-4 btn-gradient text-white font-semibold px-10 py-4 rounded-full text-lg">
+                            Enviar Dúvida ou Relato
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-[#003380] text-white/80 py-8">
+            <div class="container mx-auto px-6 text-center">
+                <p class="text-base font-semibold text-white mb-2">Onde tem pessoas, tem Sucesso RH.</p>
+                <p class="text-xs text-white/50">&copy; 2025 Sucesso RH. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- ====                  PAINEL DO OUVIDOR (ADMIN)                 ==== -->
+    <!-- =================================================================== -->
+    <div id="admin-view" class="hidden min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                <h1 class="text-3xl font-bold text-slate-800">Painel da Ouvidoria</h1>
+                <button id="logout-btn" class="font-semibold text-azul-medio hover:text-azul-escuro transition-colors flex items-center gap-2">
+                    <i data-feather="log-out" class="w-5 h-5"></i> Sair
+                </button>
+            </div>
+            
+            <div class="bg-white p-4 rounded-xl shadow-sm mb-6 flex flex-wrap gap-4 items-end">
+                <div class="flex-1 min-w-[150px]">
+                    <label for="filter-status" class="text-sm font-medium text-gray-600">Filtrar por Status</label>
+                    <select id="filter-status" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option value="Todos">Todos</option>
+                        <option value="Recebido">Recebido</option>
+                        <option value="Em Análise">Em Análise</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+                <div class="flex-1 min-w-[150px]">
+                    <label for="search-reports" class="text-sm font-medium text-gray-600">Buscar no Relato</label>
+                    <input type="text" id="search-reports" placeholder="Digite palavras-chave..." class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Protocolo</th>
+                                <th scope="col" class="px-6 py-3">Data</th>
+                                <th scope="col" class="px-6 py-3">Tipo</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reports-table-body"></tbody>
+                    </table>
+                </div>
+                 <div id="no-reports-message" class="hidden text-center py-12 text-gray-500">
+                    <i data-feather="inbox" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                    <p>Nenhum relato encontrado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =================================================================== -->
+    <!-- ====                       MODAIS                              ==== -->
+    <!-- =================================================================== -->
+
+    <!-- Report Form Modal (Popup) -->
+    <div id="report-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <form id="report-form" class="modal-popup bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100 space-y-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text">Formulário de Relato</h2>
+                    <p class="mt-2 text-gray-600">Descreva sua situação com clareza. Todas as informações são protegidas.</p>
+                </div>
+                <button type="button" class="close-modal-btn text-gray-400 hover:text-gray-700">
+                    <i data-feather="x-circle" class="w-7 h-7"></i>
+                </button>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 rounded-r-lg" role="alert">
+                <p class="font-bold">Anonimato</p>
+                <p class="text-sm">Deixar os campos de identificação em branco garante seu anonimato. Se você se identificar, seus dados serão mantidos em sigilo pela Ouvidoria.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="report-name" class="font-semibold text-gray-700">Seu nome (opcional)</label>
+                    <input type="text" id="report-name" placeholder="Deixe em branco para anonimato" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="report-email" class="font-semibold text-gray-700">Seu e-mail para contato (opcional)</label>
+                    <input type="email" id="report-email" placeholder="Para receber atualizações do caso" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <div>
+                <label for="report-type" class="font-semibold text-gray-700">Tipo de Manifestação <span class="text-red-500">*</span></label>
+                <select id="report-type" required class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <option value="">Selecione o tipo...</option>
+                    <option>Denúncia (Assédio, Discriminação, Fraude, etc.)</option>
+                    <option>Reclamação (Processos, Condições de trabalho)</option>
+                    <option>Sugestão de Melhoria</option>
+                    <option>Dúvida sobre Ética e Conduta</option>
+                    <option>Outro</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="report-details" class="font-semibold text-gray-700">Descrição detalhada do fato <span class="text-red-500">*</span></label>
+                <textarea id="report-details" rows="6" required placeholder="Descreva o que aconteceu, quando, onde, quem são os envolvidos e por que você está fazendo este relato. Quanto mais detalhes, melhor a apuração." class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            
+            <div class="flex justify-end gap-4 items-center pt-4 border-t border-gray-200">
+                <button type="button" class="close-modal-btn font-semibold text-gray-600 hover:text-gray-900">Cancelar</button>
+                <button type="submit" class="text-lg font-semibold btn-gradient text-white px-8 py-2 rounded-full disabled:opacity-50 disabled:cursor-wait flex items-center justify-center gap-2">
+                    <span class="spinner hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Enviar Relato
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <form id="admin-login-form" class="modal-popup bg-white rounded-2xl shadow-2xl w-full max-w-sm">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-center text-azul-escuro">Acesso do Ouvidor</h2>
+                <p class="text-slate-500 text-center mt-2">Insira a senha de acesso.</p>
+                <div class="mt-6">
+                    <label for="admin-password" class="font-semibold text-slate-700 block mb-1">Senha</label>
+                    <input type="password" id="admin-password" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <p id="admin-error" class="text-red-500 text-sm mt-1 hidden">Senha incorreta.</p>
+                </div>
+                <div class="mt-6 flex items-center justify-end gap-4">
+                    <button type="button" class="close-modal-btn font-semibold text-slate-600 hover:text-slate-800">Cancelar</button>
+                    <button type="submit" class="btn-gradient text-white font-bold px-6 py-2 rounded-lg">Entrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- View Report Details Modal -->
+    <div id="view-report-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <div id="view-report-content" class="modal-popup bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100 w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar"></div>
+    </div>
+
+
+    <!-- =================================================================== -->
+    <!-- ====                  JAVASCRIPT & FIREBASE                    ==== -->
+    <!-- =================================================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // =================================================
+        // === COLE SUAS CREDENCIAIS DO FIREBASE AQUI      ===
+        // =================================================
+        const firebaseConfig = {
+          apiKey: "AIzaSyB6lYQHHWvDzQEq4BWBKs0HIuavvWysqk0",
+          authDomain: "ouvidoriasucessorh.firebaseapp.com",
+          projectId: "ouvidoriasucessorh",
+          storageBucket: "ouvidoriasucessorh.firebasestorage.app",
+          messagingSenderId: "49858759404",
+          appId: "1:49858759404:web:e37c4b5cea3b9dd2cb33c9",
+          measurementId: "G-M9SBW7QTRX"
+        };
+        
+        // --- DOM Elements ---
+        const ouvidoriaView = document.getElementById('ouvidoria-view');
+        const adminView = document.getElementById('admin-view');
+        const reportModal = document.getElementById('report-modal');
+        const adminLoginModal = document.getElementById('admin-login-modal');
+        const viewReportModal = document.getElementById('view-report-modal');
+        const reportForm = document.getElementById('report-form');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const globalBanner = document.getElementById('global-banner');
+        const globalBannerMessage = document.getElementById('global-banner-message');
+
+        // --- Firebase Initialization ---
+        const isConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey.startsWith("AIza");
+        let db, auth;
+        let unsubscribeReports; 
+
+        function showBanner(message, type = 'error') {
+            globalBannerMessage.textContent = message;
+            globalBanner.classList.remove('hidden', 'bg-red-600', 'bg-green-600');
+            globalBanner.classList.add(type === 'success' ? 'bg-green-600' : 'bg-red-600');
+            setTimeout(() => globalBanner.classList.add('hidden'), 5000);
+        }
+
+        if (!isConfigured) {
+            showBanner("CONFIGURAÇÃO NECESSÁRIA: Insira suas credenciais do Firebase no código para a aplicação funcionar.");
+        } else {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                signInAnonymously(auth).catch((error) => {
+                    console.error("Anonymous sign-in failed:", error);
+                    showBanner("Falha na autenticação. Verifique as regras de segurança do Firebase.");
+                });
+            } catch (e) {
+                console.error("Firebase initialization error:", e);
+                showBanner("Erro ao inicializar o Firebase. Verifique sua configuração.");
+            }
+        }
+        
+        // --- UI & Modal Controls ---
+        feather.replace(); 
+
+        const openModal = (modal) => modal.classList.remove('hidden');
+        const closeModal = (modal) => modal.classList.add('hidden');
+
+        document.querySelectorAll('.open-report-modal-btn').forEach(btn => {
+            btn.addEventListener('click', () => openModal(reportModal));
+        });
+        document.getElementById('open-admin-login-btn').addEventListener('click', () => openModal(adminLoginModal));
+        
+        document.querySelectorAll('.close-modal-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const modal = e.target.closest('.fixed');
+                if(modal) closeModal(modal);
+            });
+        });
+
+        // --- Report Form Submission ---
+        reportForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!isConfigured) {
+                showBanner("O formulário não pode ser enviado sem a configuração do Firebase.");
+                return;
+            }
+
+            const submitBtn = reportForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.spinner').classList.remove('hidden');
+
+            const formData = {
+                nome: document.getElementById('report-name').value.trim() || "Anônimo",
+                email: document.getElementById('report-email').value.trim() || "Não informado",
+                tipo: document.getElementById('report-type').value,
+                detalhes: document.getElementById('report-details').value.trim(),
+                status: 'Recebido',
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, "ouvidoria_relatos"), formData);
+                closeModal(reportModal);
+                reportForm.reset();
+                showBanner(`Seu relato foi enviado com sucesso! Protocolo: ${docRef.id}`, 'success');
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                showBanner("Ocorreu um erro ao enviar seu relato. Tente novamente.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.querySelector('.spinner').classList.add('hidden');
+            }
+        });
+
+        // --- Admin Logic ---
+        let allReports = [];
+
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            const errorMsg = document.getElementById('admin-error');
+            if (password === 'OuvidorRH@2025') { // Demo password
+                ouvidoriaView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                closeModal(adminLoginModal);
+                adminLoginForm.reset();
+                errorMsg.classList.add('hidden');
+                initializeAdminDashboard();
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (unsubscribeReports) unsubscribeReports();
+            ouvidoriaView.classList.remove('hidden');
+            adminView.classList.add('hidden');
+        });
+
+        function initializeAdminDashboard() {
+            if (!isConfigured) return;
+            
+            const reportsCollection = collection(db, "ouvidoria_relatos");
+            unsubscribeReports = onSnapshot(reportsCollection, (snapshot) => {
+                allReports = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderReportsTable();
+            });
+
+            document.getElementById('filter-status').addEventListener('input', renderReportsTable);
+            document.getElementById('search-reports').addEventListener('input', renderReportsTable);
+        }
+
+        function renderReportsTable() {
+            const tbody = document.getElementById('reports-table-body');
+            const noReportsMsg = document.getElementById('no-reports-message');
+            const statusFilter = document.getElementById('filter-status').value;
+            const searchTerm = document.getElementById('search-reports').value.toLowerCase();
+
+            const filteredReports = allReports.filter(report => {
+                const statusMatch = statusFilter === 'Todos' || report.status === statusFilter;
+                const searchMatch = !searchTerm || report.detalhes.toLowerCase().includes(searchTerm) || report.id.toLowerCase().includes(searchTerm);
+                return statusMatch && searchMatch;
+            }).sort((a,b) => b.createdAt?.toMillis() - a.createdAt?.toMillis());
+
+            if (filteredReports.length === 0) {
+                tbody.innerHTML = '';
+                noReportsMsg.classList.remove('hidden');
+            } else {
+                noReportsMsg.classList.add('hidden');
+                tbody.innerHTML = filteredReports.map(report => `
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-mono text-xs">${report.id}</td>
+                        <td class="px-6 py-4">${report.createdAt ? report.createdAt.toDate().toLocaleDateString('pt-BR') : 'N/A'}</td>
+                        <td class="px-6 py-4">${report.tipo}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(report.status)}">
+                                ${report.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <button class="view-report-btn text-blue-600 hover:underline" data-id="${report.id}">Ver Detalhes</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            feather.replace();
+        }
+        
+        function getStatusColor(status) {
+            switch(status) {
+                case 'Recebido': return 'bg-blue-100 text-blue-800';
+                case 'Em Análise': return 'bg-yellow-100 text-yellow-800';
+                case 'Concluído': return 'bg-green-100 text-green-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        document.getElementById('reports-table-body').addEventListener('click', async (e) => {
+            if (e.target.classList.contains('view-report-btn')) {
+                const reportId = e.target.dataset.id;
+                const reportDoc = await getDoc(doc(db, "ouvidoria_relatos", reportId));
+                if (reportDoc.exists()) {
+                    displayReportDetails(reportId, reportDoc.data());
+                    openModal(viewReportModal);
+                }
+            }
+        });
+
+        function displayReportDetails(id, data) {
+            const contentDiv = document.getElementById('view-report-content');
+            contentDiv.innerHTML = `
+                <div class="flex justify-between items-start mb-6">
+                     <div>
+                        <h3 class="text-2xl font-bold text-azul-escuro">Detalhes do Relato</h3>
+                        <p class="text-sm text-gray-500 font-mono mt-1">Protocolo: ${id}</p>
+                     </div>
+                     <button class="close-modal-btn text-gray-400 hover:text-gray-700">
+                        <i data-feather="x-circle" class="w-7 h-7"></i>
+                     </button>
+                </div>
+                <div class="space-y-4">
+                    <div><p class="text-sm font-semibold text-gray-500">Data</p><p>${data.createdAt.toDate().toLocaleString('pt-BR')}</p></div>
+                    <div><p class="text-sm font-semibold text-gray-500">Identificação</p><p><strong>Nome:</strong> ${data.nome} | <strong>Email:</strong> ${data.email}</p></div>
+                    <div><p class="text-sm font-semibold text-gray-500">Tipo</p><p>${data.tipo}</p></div>
+                    <div class="bg-gray-50 p-4 rounded-lg"><p class="text-sm font-semibold text-gray-500">Descrição</p><p class="mt-1 whitespace-pre-wrap">${data.detalhes}</p></div>
+                    <div>
+                        <label for="status-update" class="text-sm font-semibold text-gray-500">Atualizar Status</label>
+                        <div class="flex gap-4 mt-2">
+                            <select id="status-update" class="flex-grow block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="Recebido" ${data.status === 'Recebido' ? 'selected' : ''}>Recebido</option>
+                                <option value="Em Análise" ${data.status === 'Em Análise' ? 'selected' : ''}>Em Análise</option>
+                                <option value="Concluído" ${data.status === 'Concluído' ? 'selected' : ''}>Concluído</option>
+                            </select>
+                            <button id="save-status-btn" data-id="${id}" class="btn-gradient text-white font-semibold px-4 py-2 rounded-lg">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contentDiv.querySelector('.close-modal-btn').addEventListener('click', () => closeModal(viewReportModal));
+            feather.replace();
+
+            document.getElementById('save-status-btn').addEventListener('click', async (e) => {
+                const reportId = e.target.dataset.id;
+                const newStatus = document.getElementById('status-update').value;
+                const reportRef = doc(db, "ouvidoria_relatos", reportId);
+                try {
+                    await updateDoc(reportRef, { status: newStatus });
+                    showBanner('Status atualizado com sucesso!', 'success');
+                    closeModal(viewReportModal);
+                } catch (error) {
+                    console.error("Error updating status: ", error);
+                    showBanner('Erro ao atualizar o status.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
